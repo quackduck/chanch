@@ -6,7 +6,8 @@ import PackageDescription
 let package = Package(
     name: "chanch",
     products: [
-        .executable(name: "chanch", targets: ["chanchTarget"]),
+        // hack to make it show up in the project dir
+        .executable(name: "../../../chanch", targets: ["chanchTarget"]),
     ],
     dependencies: [
       .package(url: "https://github.com/apple/swift-argument-parser", from: "1.0.0"),
