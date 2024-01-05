@@ -47,14 +47,39 @@ enum width: Int, EnumerableFlag {
 
 @main
 struct Chanch: ParsableCommand {
-    // @Flag(help: "Just print the current channel")
-    // public var noChange = false;
     
-    @Option(name: .short, help: ArgumentHelp("The WiFi channel number to change to", valueName: "num"))
-    public var channelNum: Int
+    static var configuration = CommandConfiguration(
+        //        abstract: "Repeats your input phrase.",
+        abstract: """
+            \rChanch is a WiFi channel changer for macOS allowing complete control over channel
+            number and channel width
+            """,
+        usage: """
+            chanch --status
+            chanch -c <channel-num> [--80 | --40 | --20]
+            """)
     
-    @Flag(help: ArgumentHelp("Channel width in MHz.", discussion: "                  (Usually 80 for the 5GHz band and 20 for the 2GHz band.)"))
-    public var channelWidth: width
+//    @Option(name: .short, help: ArgumentHelp("The WiFi channel number to change to", valueName: "num"))
+//    public var channelNum: Int?
+    @Argument(help: ArgumentHelp("The WiFi channel number to change to"))
+    public var channelNum: Int?
+    
+    @Flag(help: ArgumentHelp("Channel width in MHz.", discussion: "                  (Usually 80 for the 5GHz band and 20 for the 2GHz band)"))
+    public var channelWidth: width?
+    
+    @Flag(help: "Just print the current channel, don't change it.")
+    public var status = false;
+    
+    mutating func validate() throws {
+        if status {
+            // No need to check other options
+            return
+        } else {
+            guard let _ = channelNum, let _ = channelWidth else {
+                throw ValidationError("Specify both the channel number (with -c) and the width (with --80/--40/--20)")
+            }
+        }
+    }
     
     public func run() throws {
         let client = CWWiFiClient.shared()
@@ -73,16 +98,18 @@ struct Chanch: ParsableCommand {
         }
         print("Interface is on", currChannel!)
         
-//        return;
+        if status {
+            return;
+        }
         
-//        iface!.disassociate()
+        //        iface!.disassociate()
         if iface!.interfaceMode() != CWInterfaceMode.none {
             print("Disconnect from current network to change the channel")
             return
         }
         
         // get the CWChannelWidth from the flag
-        let channelWidth = CWChannelWidth(rawValue: channelWidth.rawValue)!
+        let channelWidth = CWChannelWidth(rawValue: channelWidth!.rawValue)!
         
         
         // list of allowed channels
@@ -95,7 +122,7 @@ struct Chanch: ParsableCommand {
         }
         print("Trying to change to", channel!)
         
-//        print("YOOO")
+        //        print("YOOO")
         // set channel
         do {
             try iface?.setWLANChannel(channel!)
