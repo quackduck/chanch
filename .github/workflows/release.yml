@@ -16,7 +16,7 @@ jobs:
           with:
             type: 'tar'
             filename: 'release.tar.gz'
-            exclusions: '*.git* .swiftpm'
+            exclusions: '*.git* .swiftpm *.tar.gz'
         - name: Upload Release
           uses: ncipollo/release-action@v1.12.0
           with:
