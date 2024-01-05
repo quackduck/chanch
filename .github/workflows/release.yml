@@ -15,10 +15,10 @@ jobs:
           uses: thedoctor0/zip-release@0.7.6
           with:
             type: 'tar'
-            filename: 'release.tar.gz'
-            exclusions: '*.git* .swiftpm *.tar*'
+            filename: '../release.tar.gz'
+            exclusions: '*.git* .swiftpm'
         - name: Upload Release
           uses: ncipollo/release-action@v1.12.0
           with:
-            artifacts: "release.tar.gz"
+            artifacts: "../release.tar.gz"
             token: ${{ secrets.GITHUB_TOKEN }}
