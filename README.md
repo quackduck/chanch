@@ -7,7 +7,7 @@ Chanch is a WiFi channel changer for macOS allowing complete control over channe
 number and channel width
 
 USAGE: chanch --status
-       chanch -c <channel-num> [--80 | --40 | --20]
+       chanch <channel-num> [--80 | --40 | --20]
 
 ARGUMENTS:
   <channel-num>           The WiFi channel number to change to

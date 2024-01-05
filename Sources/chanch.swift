@@ -56,7 +56,7 @@ struct Chanch: ParsableCommand {
             """,
         usage: """
             chanch --status
-            chanch -c <channel-num> [--80 | --40 | --20]
+            chanch <channel-num> [--80 | --40 | --20]
             """)
     
 //    @Option(name: .short, help: ArgumentHelp("The WiFi channel number to change to", valueName: "num"))
